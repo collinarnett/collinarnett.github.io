@@ -25,4 +25,7 @@
 	        		<li><a href="https://github.com/collinarnett">github.com/collinarnett</a></li>
 				</ul>
 			</footer>
+		{% if jekyll.environment == 'production' %}
+    {% include analytics.html %}
+    {% endif %}
 		</body>
