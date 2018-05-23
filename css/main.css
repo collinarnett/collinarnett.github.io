@@ -1,6 +1,11 @@
+
+
 body {
     margin: 60px auto;
     width: 70%;
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto;
 }
 nav ul, footer ul {
     font-family:'Helvetica', 'Arial', 'Sans-Serif';
@@ -30,6 +35,7 @@ p {
     color: #333;
 }
 footer {
+  grid-row-start: 2fr auto;
     border-top: 1px solid #d5d5d5;
     font-size: .8em;
 }
@@ -45,31 +51,14 @@ ul.posts li {
 
 img {
   float: left;
-  display: inline-block;
-  border-radius: 1%;
-  padding: 10px;
+  display: block;
+  border:5px solid black;
+  border-radius: 2%;
 }
 
-.avatar {
-	display: inline-block;
-	overflow: hidden;
-	line-height: 1;
-	vertical-align: middle;
-	border-radius: 3px;
-}
-
-.width-full {
-	width: 100% !important;
-}
-
-.rounded-2 {
-	border-radius: 6px !important;
-}
-
-* {
-	box-sizing: border-box;
-}
-
-element {
-  
+#sideBar{
+    width:250px;
+    height:350px;
+    display:block;
+    float:left;
 }
