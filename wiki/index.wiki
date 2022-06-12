@@ -1,1 +1,9 @@
-# Hello World
+= Collin Arnett =
+
+== About Me ==
+
+== Resume ==
+
+== Blog ==
+
+== Wiki ==
