@@ -1,8 +1,8 @@
 = Collin Arnett =
 
 == About Me ==
-
-== Resume ==
+* [[https://github.com/collinarnett|GitHub]]
+* [[https://www.linkedin.com/in/collin-arnett/|LinkedIn]]
 
 == Blog ==
 
