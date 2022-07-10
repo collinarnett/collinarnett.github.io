@@ -6,4 +6,7 @@
 
 == Blog ==
 
+=== Notes ===
+[[Crafting Interpreters]]
+
 == Wiki ==

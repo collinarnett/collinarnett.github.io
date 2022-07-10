@@ -1,0 +1,93 @@
+= Contents =
+  - [[#Chapter 1: Introduction|Chapter 1: Introduction]]
+      - [[#Chapter 1: Introduction#1.1.1 Little Languages|1.1.1 Little Languages]]
+        - [[#Chapter 1: Introduction#1.1.1 Little Languages#Side Tangent|Side Tangent]]
+      - [[#Chapter 1: Introduction#1.1.2 Languages are a great exercise|1.1.2 Languages are a great exercise]]
+    - [[#Chapter 1: Introduction#1.2 How the book is Organized|1.2 How the book is Organized]]
+      - [[#Chapter 1: Introduction#1.2 How the book is Organized#1.2.1 The code|1.2.1 The code]]
+    - [[#Chapter 1: Introduction#1.3 The First Interpreter|1.3 The First Interpreter]]
+    - [[#Chapter 1: Introduction#1.4 The Second interpreter|1.4 The Second interpreter]]
+  - [[#Challenges|Challenges]]
+
+= Chapter 1: Introduction =
+
+This book is positioned as a learn by doing book. The author explains that this
+foray is aimed less at theory and more at understanding from the perspective of
+playing around to the extent that the reader would fit in at a "cocktail party
+for programming language researchers".
+
+The language being implemented is called Lox and readers will be implementing it
+**twice**.
+
+
+=== 1.1.1 Little Languages ===
+The author describes the motivation less as a motivation in learning how to make
+an exquisite general purpose language but understanding the motivations of
+*little languages* (Make, YAML and JSON just to name a few I'm familiar with).
+This should help readers who might need to create a custom parser or tool that
+might not exist.
+
+==== Side Tangent ====
+
+The reason I'm reading this book is to gain insight into thoughtful API design.
+I'm not very good at writing large programs since I struggle with scaling my
+applications beyond simple scripts. I'm hoping this book will teach me more
+about the underlying structure of programming languages such that I can
+intuitively understand where I'm supposed to be going when writing my
+applications.
+
+=== 1.1.2 Languages are a great exercise ===
+
+The author comments on how implementing a language is a monumental task, that
+once accomplished makes other programming endeavors much easier. Easier since
+you become so familiar with optimization on the memory and runtime side of
+things (data structures and algorithms play a big hand in this obviously).
+
+== 1.2 How the book is Organized ==
+
+The book is organized into 3 parts:
+	1. Introduction
+	2. Building a Lox Interpreter
+	3. Building a Lox Interpreter
+
+The author hasn't detailed anything beyond this so we'll see where to go from
+here.
+
+=== 1.2.1 The code ===
+
+Apparently in other books focused on this same topic they choose to what the
+author refers to as *compiler-compilers* that generate code from some higher
+level description (I'm guessing this is similar to low or no code examples) but
+assures the readers that he will abstain from using these to keep us as close to
+the real thing as possible.
+
+He also explains that this book will not help with setting up the environment
+associated with any of the programming. For this reason I will be using Nix as
+always to follow along with this book and document my experience moving forward.
+The majority of section 1.2 discusses how the book is formatted but there is a
+small snippet of a section where he explains that at the end of some chapters
+there will be a design section (I'm very excited for these)
+
+== 1.3 The First Interpreter ==
+
+This section explains the author's choice for using Java as the language to
+implement the first interpreter. He explains how the static typing and structure
+that Java gives helps write cleaner code leading to a better understanding of
+the language creation process. Java is also a popular object oriented language
+therefore allowing most readers to interact with this section easily.
+
+== 1.4 The Second interpreter ==
+
+As with the last section this one also deals with the language associated with
+the second interpreter. This time the language chosen is C. C is an obvious
+choice to implement a language in since it boasts fast performance and fantastic
+portability. He also details how the first interpreter is focused on being
+correct while the second one is focused on speed and efficiency. Of course the
+author will also have us test the implementation of this language, benchmarking
+it against others.
+
+= Challenges =
+
+1. What are the 6 domain specific languages used to write the build tool used to
+	 compile this book?
+	 - Dart, C, Java, Markdown, HTML, YAML
