@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>Mobile NixOS Development</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Notes"><h1 id="Notes" class="header"><a href="#Notes">Notes</a></h1></div>
+
+<div id="Notes-Creating a mobile-nixos Installer"><h2 id="Creating a mobile-nixos Installer" class="header"><a href="#Notes-Creating a mobile-nixos Installer">Creating a mobile-nixos Installer</a></h2></div>
+
+<div id="Notes-Creating a mobile-nixos Installer-Motivation"><h3 id="Motivation" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Motivation">Motivation</a></h3></div>
+
+<p>
+Currently mobile-nixos has no non-nix friendly installation
+method. The current method involves many annoying imperative steps that do not
+follow nix best practices. Eg. To install mobile-nixos the setup process has the
+following steps:
+</p>
+
+<ol>
+<li>
+<code>git clone</code> the mobile-nixos repository.
+
+<li>
+Find the latest revision of mobile-nixos that successfully builds on hydra.
+
+<li>
+<code>git clone</code> nixpkgs and checkout the target revision.
+
+<li>
+Change NIXPATH to the local nixpkgs repository.
+
+<li>
+Create a <code>local.nix</code> to apply configuration options to the image being built.
+
+<li>
+Use <code>nix-build</code> to compile mobile-nixos.
+
+</ol>
+
+<p>
+These steps imply users have knowledge of nixpkgs, nix-build and how nix
+expressions work for importing <code>local.nix</code>. To remove this barrier to the nix
+ecosystem, mobile-nixos requires an installer similar to the
+<a href="https://nixos.org/blog/announcements.html">the one on desktop NixOS</a>. Adding an installer to mobile-nixos gives users the
+ability to trial NixOS and the Nix ecosystem when they might have passed over
+the desktop distribution.
+</p>
+
+<div id="Notes-Creating a mobile-nixos Installer-Introduction to Calamares"><h3 id="Introduction to Calamares" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Introduction to Calamares">Introduction to Calamares</a></h3></div>
+
+<p>
+Creating an installer for  would require the use of the installer framework
+<a href="https://github.com/calamares/calamares">Calamares</a>, the same framework used
+for desktop NixOS.
+<img src="https://user-images.githubusercontent.com/91113/156779445-4305802a-9d97-4c48-9763-2431d9602d20.png" alt="nixos calamares screenshot" />
+</p>
+
+<p>
+Calamares would solve the problem of introducing new users mobile-nixos since
+provides an intuitive GUI to step users through the different configuration
+options when installing mobile-nixos. <a href="https://postmarketos.org/">postmarketOS</a> has already implemented
+a
+[[<a href="https://github.com/calamares/calamares-extensions/blob/calamares/modules/mobile/CMakeLists.txt|mobile">https://github.com/calamares/calamares-extensions/blob/calamares/modules/mobile/CMakeLists.txt|mobile</a>
+Calamares extension]] which allows postmarket to capture
+</p>
+<div id="Notes-Creating a mobile-nixos Installer-Introduction to Calamares-Calamares Internals"><h4 id="Calamares Internals" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Introduction to Calamares-Calamares Internals">Calamares Internals</a></h4></div>
+
+
+
+<div id="Notes-Creating a mobile-nixos Installer-Calamares and Desktop NixO"><h3 id="Calamares and Desktop NixO" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Calamares and Desktop NixO">Calamares and Desktop NixO</a></h3></div>
+<div id="Notes-Creating a mobile-nixos Installer-Requirements for Calamares integration on Mobile NixOS"><h3 id="Requirements for Calamares integration on Mobile NixOS" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Requirements for Calamares integration on Mobile NixOS">Requirements for Calamares integration on Mobile NixOS</a></h3></div>
+<div id="Notes-Creating a mobile-nixos Installer-Calamares and postmarketOS"><h3 id="Calamares and postmarketOS" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Calamares and postmarketOS">Calamares and postmarketOS</a></h3></div>
+<div id="Notes-Creating a mobile-nixos Installer-Integration Notes"><h3 id="Integration Notes" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Integration Notes">Integration Notes</a></h3></div>
+<div id="Notes-Creating a mobile-nixos Installer-Retrospective"><h3 id="Retrospective" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Retrospective">Retrospective</a></h3></div>
+
+</body>
+</html>

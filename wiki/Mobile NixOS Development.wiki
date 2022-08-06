@@ -1,0 +1,47 @@
+=Notes=
+
+==Creating a mobile-nixos Installer==
+
+===Motivation===
+
+Currently mobile-nixos has no non-nix friendly installation
+method. The current method involves many annoying imperative steps that do not
+follow nix best practices. Eg. To install mobile-nixos the setup process has the
+following steps:
+
+1. `git clone` the mobile-nixos repository.
+2. Find the latest revision of mobile-nixos that successfully builds on hydra.
+3. `git clone` nixpkgs and checkout the target revision.
+4. Change NIXPATH to the local nixpkgs repository.
+5. Create a `local.nix` to apply configuration options to the image being built.
+6. Use `nix-build` to compile mobile-nixos.
+
+These steps imply users have knowledge of nixpkgs, nix-build and how nix
+expressions work for importing `local.nix`. To remove this barrier to the nix
+ecosystem, mobile-nixos requires an installer similar to the
+[[https://nixos.org/blog/announcements.html|the one on desktop NixOS]]. Adding an installer to mobile-nixos gives users the
+ability to trial NixOS and the Nix ecosystem when they might have passed over
+the desktop distribution.
+
+===Introduction to Calamares===
+
+Creating an installer for  would require the use of the installer framework
+[[https://github.com/calamares/calamares|Calamares]], the same framework used
+for desktop NixOS.
+{{https://user-images.githubusercontent.com/91113/156779445-4305802a-9d97-4c48-9763-2431d9602d20.png|nixos calamares screenshot}}
+
+Calamares would solve the problem of introducing new users mobile-nixos since
+provides an intuitive GUI to step users through the different configuration
+options when installing mobile-nixos. [[https://postmarketos.org/|postmarketOS]] has already implemented
+a
+[[https://github.com/calamares/calamares-extensions/blob/calamares/modules/mobile/CMakeLists.txt|mobile
+Calamares extension]] which allows postmarket to capture
+====Calamares Internals====
+
+
+
+===Calamares and Desktop NixO===
+===Requirements for Calamares integration on Mobile NixOS===
+===Calamares and postmarketOS===
+===Integration Notes===
+===Retrospective===

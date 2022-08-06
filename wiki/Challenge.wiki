@@ -1,0 +1,58 @@
+= Challenges =
+
+Since I will be detailing my notes on these challenges though this blog, I
+thought it would be a good idea to record how I deal with tooling and issues
+faced during development.
+
+== Challenge 1 ==
+
+For the answer for challenge 1 see the [[Introduction#Challenges|Challenges]]
+section of the Introduction.
+
+== Challenge 2 ==
+
+    Get a “Hello, world!” program written and running in Java. Set up
+		whatever makefiles or IDE projects you need to get it working.
+		If you have a debugger, get comfortable with it and step through
+		your program as it runs.
+
+If you have read any of my other articles or know me personally, you'll know
+that I am obsessed with [[https://nixos.org/|Nix]]. Therefore it's obvious that
+I'll be wrapping all the code developed during reading this book with Nix. Since
+the first coding challenge relies on Java I first need to learn how to package a
+Java application with Nix since I've never worked with Nix and Java.
+
+Lets start with a simple flake template:
+
+{{{nix
+{
+  description =
+    "Implementation of challenges proposed by the book Crafting Interpreters";
+  inputs = {
+    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:NixOS/nixpkgs";
+  };
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let pkgs = nixpkgs.legacyPackages.${system};
+      in with pkgs; rec {
+        packages = flake-utils.lib.flattenTree {
+					# Here is where we will package our first challenge
+          HelloWorld = stdenv.mkDerivation { };
+        };
+        apps = {
+          HelloWorld = flake-utils.lib.mkApp { drv = packages.java; };
+        };
+      });
+}
+}}}
+
+This template includes some helpful functions from the
+[[https://github,com/numtide/flake-utils|flake-utils]] set which make our
+interactions with Nix flakes so much simpler. If you want to learn more about
+flakes and how they work checkout Tweag's
+[[https://www.tweag.io/blog/2020-05-25-flakes/|blog post]] for a simple
+introduction on the subject.
+
+As explained in
+the [[https://nixos.org/manual/nixpkgs/unstable/#sec-language-java|nixpkgs manual]]
