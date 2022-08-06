@@ -1,7 +1,38 @@
-=Game Server Cage=
+=Game Server Cage - Wireguard on NixOS=
 
 ==Introduction & Motivation==
+
+I was playing *The Forest* with a few friends and thought that it would be nice
+to setup a few game servers. Having recently transitioned to NixOS and never
+having set something like this up before, this is also a great time to learn a
+few newer technologies other than simply setting up the server and opening the
+port on my router.
+
+My vision is something like this:
+
+Have a Wireguard VPN setup where my friends can connect to an isolated subnet
+where all my game servers are exposed. As a bonus goal I would also like to have
+my normal internet traffic for my desktop and other devices go through Wireguard
+to a hosted VPS on AWS. I'm hoping this exercise will teach me more about
+networking and VPNs in general.
+
+The part of my knowledge that I'm missing for this case is how to separate the
+game server VPN from accessing the rest of my network since I only care about
+the game server traffic reaching my friends and my own windows gaming virtual
+machine also accessing the server.
+
 ==Network Topology==
+WGI = Wiregaurd Virtual Interface.
+
+192.168.1.1:
+	`zombie` - 192.168.1.164:
+		`game0` - WGVI for my game servers.
+		`vpn0` - WGVI for general use.
+
+In this case `zombie` needs to act both as a Wireguard client and server. It
+acts as a server hosting the VPN that allows for my friends and as a client
+connecting to my VPS on AWS.
+
 ==Implementation==
 ==Minecraft Server==
 ==Conclusion==
