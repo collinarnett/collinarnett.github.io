@@ -107,7 +107,7 @@ Flash
 
 </ol>
 
-<div id="Notes-Creating a mobile-nixos Installer-Calamares Internals"><h3 id="Calamares Internals" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Calamares Internals">Calamares Internals</a></h3></div>
+<div id="Notes-Creating a mobile-nixos Installer-Calamares Internals &amp; NixOS"><h3 id="Calamares Internals &amp; NixOS" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Calamares Internals &amp; NixOS">Calamares Internals &amp; NixOS</a></h3></div>
 
 <p>
 Calamares defines three different consumers of Calamares:
@@ -126,7 +126,9 @@ User - Those who use Calamares to install a given Linux distribution.
 </ol>
 
 <p>
-Deployer's must create Calamares <em>modules</em> to deploy their distribution.
+Deployer's must create Calamares <span id="Notes-Creating a mobile-nixos Installer-Calamares Internals &amp; NixOS-modules"></span><strong id="modules">modules</strong> to deploy their distribution. In the
+case of NixOS, modules are packaged in a Calamares <span id="Notes-Creating a mobile-nixos Installer-Calamares Internals &amp; NixOS-extension"></span><strong id="extension">extension</strong> which is then
+included in the NixOS installer image.
 </p>
 
 <p>
@@ -144,7 +146,39 @@ installer experience for the end user:
 
 </ol>
 
-<div id="Notes-Creating a mobile-nixos Installer-Calamares and Desktop NixOS"><h3 id="Calamares and Desktop NixOS" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Calamares and Desktop NixOS">Calamares and Desktop NixOS</a></h3></div>
+<p>
+NixOS' Calamares extension includes a python job which is responsible for
+creating a new nix configuration file which contains sections of nix code which
+correspond with the user's choices when moving through the Calamares setup
+process. For example:
+</p>
+
+<p>
+In the
+<a href="https://github.com/NixOS/calamares-nixos-extensions/blob/calamares/modules/nixos/main.py">main.py</a>
+file there is a string block corresponding to gnome being enabled:
+</p>
+<pre python>
+cfggnome = """  # Enable the X11 windowing system.
+  services.xserver.enable = true;
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+"""
+</pre>
+<p>
+which is eventually enabled with the following logic:
+</p>
+<pre python>
+if gs.value("packagechooser_packagechooser") == "gnome":
+		cfg += cfggnome
+</pre>
+
+<p>
+More information about Calamares python jobs can be found in the
+<a href="https://github.com/calamares/calamares/blob/calamares/src/modules/README.md#python-modules">Python Modules</a> section of the documentation.
+</p>
+
 <div id="Notes-Creating a mobile-nixos Installer-Requirements for Calamares integration on Mobile NixOS"><h3 id="Requirements for Calamares integration on Mobile NixOS" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Requirements for Calamares integration on Mobile NixOS">Requirements for Calamares integration on Mobile NixOS</a></h3></div>
 <div id="Notes-Creating a mobile-nixos Installer-Calamares and postmarketOS"><h3 id="Calamares and postmarketOS" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Calamares and postmarketOS">Calamares and postmarketOS</a></h3></div>
 <div id="Notes-Creating a mobile-nixos Installer-Integration"><h3 id="Integration" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Integration">Integration</a></h3></div>

@@ -51,7 +51,7 @@ Calamares allows developers to define and customize the following setup steps:
 7. Install
 8. Flash
 
-===Calamares Internals===
+===Calamares Internals & NixOS===
 
 Calamares defines three different consumers of Calamares:
 
@@ -59,7 +59,9 @@ Calamares defines three different consumers of Calamares:
 2. Deployer - Those who use Calamares to deploy their Linux distribution.
 3. User - Those who use Calamares to install a given Linux distribution.
 
-Deployer's must create Calamares _modules_ to deploy their distribution.
+Deployer's must create Calamares *modules* to deploy their distribution. In the
+case of NixOS, modules are packaged in a Calamares *extension* which is then
+included in the NixOS installer image.
 
 From a deployer's perspective, Calamares uses two methods of customizing the
 installer experience for the end user:
@@ -68,7 +70,31 @@ installer experience for the end user:
 2. `jobmodule` - Non-user visible modules. C++, Python, external process (not
 	 recommended).
 
-===Calamares and Desktop NixOS===
+NixOS' Calamares extension includes a python job which is responsible for
+creating a new nix configuration file which contains sections of nix code which
+correspond with the user's choices when moving through the Calamares setup
+process. For example:
+
+In the
+[[https://github.com/NixOS/calamares-nixos-extensions/blob/calamares/modules/nixos/main.py|main.py]]
+file there is a string block corresponding to gnome being enabled:
+{{{python
+cfggnome = """  # Enable the X11 windowing system.
+  services.xserver.enable = true;
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+"""
+}}}
+which is eventually enabled with the following logic:
+{{{python
+if gs.value("packagechooser_packagechooser") == "gnome":
+		cfg += cfggnome
+}}}
+
+More information about Calamares python jobs can be found in the
+[[https://github.com/calamares/calamares/blob/calamares/src/modules/README.md#python-modules|Python Modules]] section of the documentation.
+
 ===Requirements for Calamares integration on Mobile NixOS===
 ===Calamares and postmarketOS===
 ===Integration===
