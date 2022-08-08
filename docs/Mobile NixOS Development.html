@@ -146,6 +146,8 @@ installer experience for the end user:
 
 </ol>
 
+<div id="Notes-Creating a mobile-nixos Installer-Calamares Internals &amp; NixOS-Python Job Module"><h4 id="Python Job Module" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Calamares Internals &amp; NixOS-Python Job Module">Python Job Module</a></h4></div>
+
 <p>
 NixOS' Calamares extension includes a python job which is responsible for
 creating a new nix configuration file which contains sections of nix code which
@@ -178,6 +180,33 @@ if gs.value("packagechooser_packagechooser") == "gnome":
 More information about Calamares python jobs can be found in the
 <a href="https://github.com/calamares/calamares/blob/calamares/src/modules/README.md#python-modules">Python Modules</a> section of the documentation.
 </p>
+
+<div id="Notes-Creating a mobile-nixos Installer-Calamares Internals &amp; NixOS-QML View Module"><h4 id="QML View Module" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Calamares Internals &amp; NixOS-QML View Module">QML View Module</a></h4></div>
+
+<p>
+The NixOS Calamares extension uses QML for the customization of it's
+<code>viewmodule</code> which handles the user interface and NixOS specific branding. In
+addition to the python module and the view module, the extension also includes
+the use of the following base Calamares modules:
+</p>
+
+<ul>
+<li>
+locale
+
+<li>
+keyboard
+
+<li>
+users
+
+<li>
+partition
+
+<li>
+packagechooser
+
+</ul>
 
 <div id="Notes-Creating a mobile-nixos Installer-Requirements for Calamares integration on Mobile NixOS"><h3 id="Requirements for Calamares integration on Mobile NixOS" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Requirements for Calamares integration on Mobile NixOS">Requirements for Calamares integration on Mobile NixOS</a></h3></div>
 <div id="Notes-Creating a mobile-nixos Installer-Calamares and postmarketOS"><h3 id="Calamares and postmarketOS" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Calamares and postmarketOS">Calamares and postmarketOS</a></h3></div>

@@ -70,6 +70,8 @@ installer experience for the end user:
 2. `jobmodule` - Non-user visible modules. C++, Python, external process (not
 	 recommended).
 
+====Python Job Module====
+
 NixOS' Calamares extension includes a python job which is responsible for
 creating a new nix configuration file which contains sections of nix code which
 correspond with the user's choices when moving through the Calamares setup
@@ -94,6 +96,19 @@ if gs.value("packagechooser_packagechooser") == "gnome":
 
 More information about Calamares python jobs can be found in the
 [[https://github.com/calamares/calamares/blob/calamares/src/modules/README.md#python-modules|Python Modules]] section of the documentation.
+
+====QML View Module====
+
+The NixOS Calamares extension uses QML for the customization of it's
+`viewmodule` which handles the user interface and NixOS specific branding. In
+addition to the python module and the view module, the extension also includes
+the use of the following base Calamares modules:
+
+* locale
+* keyboard
+* users
+* partition
+* packagechooser
 
 ===Requirements for Calamares integration on Mobile NixOS===
 ===Calamares and postmarketOS===
