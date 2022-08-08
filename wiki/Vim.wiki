@@ -1,0 +1,8 @@
+= Vim Cheatsheet =
+
+== Vim Spell ==
+
+The following commands work while highlighting a word in visual-mode.
+
+- `zg` - Mark word as good.
+- `zw` - Mark word as bad (comments out good words in the spell file).

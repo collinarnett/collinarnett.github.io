@@ -4,44 +4,72 @@
 
 ===Motivation===
 
-Currently mobile-nixos has no non-nix friendly installation
-method. The current method involves many annoying imperative steps that do not
-follow nix best practices. Eg. To install mobile-nixos the setup process has the
-following steps:
+Currently mobile-nixos has no non-nix friendly installation method. The current
+method involves many annoying imperative steps that do not follow nix best
+practices. Eg. To install mobile-nixos the setup process has the following
+steps:
 
 1. `git clone` the mobile-nixos repository.
 2. Find the latest revision of mobile-nixos that successfully builds on hydra.
 3. `git clone` nixpkgs and checkout the target revision.
-4. Change NIXPATH to the local nixpkgs repository.
+4. Change `NIXPATH` to the local nixpkgs repository.
 5. Create a `local.nix` to apply configuration options to the image being built.
 6. Use `nix-build` to compile mobile-nixos.
 
 These steps imply users have knowledge of nixpkgs, nix-build and how nix
 expressions work for importing `local.nix`. To remove this barrier to the nix
 ecosystem, mobile-nixos requires an installer similar to the
-[[https://nixos.org/blog/announcements.html|the one on desktop NixOS]]. Adding an installer to mobile-nixos gives users the
-ability to trial NixOS and the Nix ecosystem when they might have passed over
-the desktop distribution.
+[[https://nixos.org/blog/announcements.html|the one on desktop NixOS]]. Adding
+an installer to mobile-nixos gives users the ability to trial NixOS and the Nix
+ecosystem when they might have passed over the desktop distribution.
 
 ===Introduction to Calamares===
 
-Creating an installer for  would require the use of the installer framework
-[[https://github.com/calamares/calamares|Calamares]], the same framework used
-for desktop NixOS.
+Creating an installer for mobile-nixos would require the use of the installer
+framework [[https://github.com/calamares/calamares|Calamares]], the same
+framework used for desktop NixOS.
+
 {{https://user-images.githubusercontent.com/91113/156779445-4305802a-9d97-4c48-9763-2431d9602d20.png|nixos calamares screenshot}}
 
-Calamares would solve the problem of introducing new users mobile-nixos since
+Calamares solves the problem of introducing new users mobile-nixos since
 provides an intuitive GUI to step users through the different configuration
-options when installing mobile-nixos. [[https://postmarketos.org/|postmarketOS]] has already implemented
-a
-[[https://github.com/calamares/calamares-extensions/blob/calamares/modules/mobile/CMakeLists.txt|mobile
-Calamares extension]] which allows postmarket to capture
-====Calamares Internals====
+options when installing mobile-nixos. [[https://postmarketos.org/|postmarketOS]]
+has already implemented a
+[[https://github.com/calamares/calamares-extensions/blob/calamares/modules/mobile/CMakeLists.txt|mobile Calamares extension]] which allows postmarketOS to capture users looking to use
+mobile friendly Linux distributions without a large barrier to entry.
 
+{{https://postmarketos.org/static/img/2020-07/ondev-welcome.png|postmarketos calamares screenshot}}
 
+Calamares allows developers to define and customize the following setup steps:
 
-===Calamares and Desktop NixO===
+1. Welcome
+2. Location
+3. Keyboard
+4. Partitions
+5. Users
+6. Summary
+7. Install
+8. Flash
+
+===Calamares Internals===
+
+Calamares defines three different consumers of Calamares:
+
+1. Developer - Those who work on Calamares itself.
+2. Deployer - Those who use Calamares to deploy their Linux distribution.
+3. User - Those who use Calamares to install a given Linux distribution.
+
+Deployer's must create Calamares _modules_ to deploy their distribution.
+
+From a deployer's perspective, Calamares uses two methods of customizing the
+installer experience for the end user:
+
+1. `viewmodule` - User visible modules. C++, Widgets, QML.
+2. `jobmodule` - Non-user visible modules. C++, Python, external process (not
+	 recommended).
+
+===Calamares and Desktop NixOS===
 ===Requirements for Calamares integration on Mobile NixOS===
 ===Calamares and postmarketOS===
-===Integration Notes===
+===Integration===
 ===Retrospective===

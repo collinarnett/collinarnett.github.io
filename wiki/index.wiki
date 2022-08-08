@@ -5,8 +5,11 @@
 * [[https://www.linkedin.com/in/collin-arnett/|LinkedIn]]
 
 == Blog ==
-[[Game Server Cage]]
+* [[Game Server Cage]]
 === Notes ===
-[[Crafting Interpreters]]
-[[Mobile NixOS Development]]
+* [[Crafting Interpreters]]
+* [[Mobile NixOS Development]]
+
+== Cheatsheets ==
+* [[Vim]]
 == Wiki ==
