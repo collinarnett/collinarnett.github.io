@@ -126,15 +126,37 @@ medium lives.
 
 {{https://wiki.postmarketos.org/images/thumb/0/0f/Ondev-same-medium.png/300px-Ondev-same-medium.png|on-device installer diagram}}
 
+mobile-nixos assumes that your device uses SPI flash to enable
+[[https://tow-boot.org/|Tow-Boot]]
+therefore it is preferable to write the image
+
+%% This section above needs to be massively expanded on since I am unsure how
+%% samueldr wants nixos to be installed.
+
+
 ===Requirements for Calamares integration on Mobile NixOS===
+
+samueldr has listed his requirements for mobile-nixos in a
+[[https://github.com/NixOS/mobile-nixos/issues/499|GitHub issue]]. His
+requirements are outlined as the following
+
+* [ ] - Setup step to configure networking
+* [ ] - Phone environment selection (Phosh, Plasma Mobile)
+* [ ] - Setup step to configure partitioning
+* [ ] - Passphrase or Pin to support LUKS
+* [ ] - Full screen installer
+* [ ] - Virtual keyboard support
+
 ===Integration===
 ===Retrospective===
 
 ==Helpful Links==
 * Mobile-nixos Setup
 	- https://mobile.nixos.org/getting-started.html
-* NixOS Calamares Extension
+* NixOS Calamares Integration PR
 	- https://github.com/NixOS/nixpkgs/pull/161788/files#diff-8eae4ac4558588dbcebff365560fb50aeb8bbc8a256b53373bed55cb431e47f9
+* NixOS Calamares Extension Repository
+	- https://github.com/NixOS/calamares-nixos-extensions
 * Calamares Modules Documentation
 	- https://github.com/calamares/calamares/tree/calamares/src/module
 * PostmarketOS On-device installer Documentation
