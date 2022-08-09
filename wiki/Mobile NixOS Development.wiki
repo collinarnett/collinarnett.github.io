@@ -112,14 +112,14 @@ the use of the following base Calamares modules:
 
 ====Calamares and postmarketOS====
 
-Calamares also has C++ + QML bindings to create modules that are a combinations
-but unfortunately these bindings are currently
+Calamares also has C++, QML bindings to create modules that are a hybrid of job
+and views but unfortunately these bindings are currently
 [[https://github.com/calamares/calamares/tree/calamares/src/modules#c-jobmodule|undocumented]];
 however postmarketOS has created a mobile extension that demonstrates this
 view+job module.
 
 postmarketOS has also implemented the ability to load other OS' into using it's
-on [[https://wiki.postmarketos.org/wiki/On-device_installer|device setup process]]
+own [[https://wiki.postmarketos.org/wiki/On-device_installer|device setup process]]
 however this process seems to add unneeded complexity when installing the target
 OS since it installs the target OS to the same disk where the installation
 medium lives.

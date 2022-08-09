@@ -211,8 +211,8 @@ packagechooser
 <div id="Notes-Creating a mobile-nixos Installer-Calamares Internals &amp; NixOS-Calamares and postmarketOS"><h4 id="Calamares and postmarketOS" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Calamares Internals &amp; NixOS-Calamares and postmarketOS">Calamares and postmarketOS</a></h4></div>
 
 <p>
-Calamares also has C++ + QML bindings to create modules that are a combinations
-but unfortunately these bindings are currently
+Calamares also has C++, QML bindings to create modules that are a hybrid of job
+and views but unfortunately these bindings are currently
 <a href="https://github.com/calamares/calamares/tree/calamares/src/modules#c-jobmodule">undocumented</a>;
 however postmarketOS has created a mobile extension that demonstrates this
 view+job module.
@@ -220,7 +220,7 @@ view+job module.
 
 <p>
 postmarketOS has also implemented the ability to load other OS' into using it's
-on <a href="https://wiki.postmarketos.org/wiki/On-device_installer">device setup process</a>
+own <a href="https://wiki.postmarketos.org/wiki/On-device_installer">device setup process</a>
 however this process seems to add unneeded complexity when installing the target
 OS since it installs the target OS to the same disk where the installation
 medium lives.
