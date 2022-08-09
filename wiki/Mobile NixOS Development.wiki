@@ -110,7 +110,32 @@ the use of the following base Calamares modules:
 * partition
 * packagechooser
 
+====Calamares and postmarketOS====
+
+Calamares also has C++ + QML bindings to create modules that are a combinations
+but unfortunately these bindings are currently
+[[https://github.com/calamares/calamares/tree/calamares/src/modules#c-jobmodule|undocumented]];
+however postmarketOS has created a mobile extension that demonstrates this
+view+job module.
+
+postmarketOS has also implemented the ability to load other OS' into using it's
+on [[https://wiki.postmarketos.org/wiki/On-device_installer|device setup process]]
+however this process seems to add unneeded complexity when installing the target
+OS since it installs the target OS to the same disk where the installation
+medium lives.
+
+{{https://wiki.postmarketos.org/images/thumb/0/0f/Ondev-same-medium.png/300px-Ondev-same-medium.png|on-device installer diagram}}
+
 ===Requirements for Calamares integration on Mobile NixOS===
-===Calamares and postmarketOS===
 ===Integration===
 ===Retrospective===
+
+==Helpful Links==
+* Mobile-nixos Setup
+	- https://mobile.nixos.org/getting-started.html
+* NixOS Calamares Extension
+	- https://github.com/NixOS/nixpkgs/pull/161788/files#diff-8eae4ac4558588dbcebff365560fb50aeb8bbc8a256b53373bed55cb431e47f9
+* Calamares Modules Documentation
+	- https://github.com/calamares/calamares/tree/calamares/src/module
+* PostmarketOS On-device installer Documentation
+	- https://wiki.postmarketos.org/wiki/On-device_installer

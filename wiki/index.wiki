@@ -6,7 +6,7 @@
 
 == Blog ==
 * [[Game Server Cage]]
-=== Notes ===
+== Notes ==
 * [[Crafting Interpreters]]
 * [[Mobile NixOS Development]]
 

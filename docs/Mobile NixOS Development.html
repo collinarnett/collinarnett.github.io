@@ -208,10 +208,67 @@ packagechooser
 
 </ul>
 
+<div id="Notes-Creating a mobile-nixos Installer-Calamares Internals &amp; NixOS-Calamares and postmarketOS"><h4 id="Calamares and postmarketOS" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Calamares Internals &amp; NixOS-Calamares and postmarketOS">Calamares and postmarketOS</a></h4></div>
+
+<p>
+Calamares also has C++ + QML bindings to create modules that are a combinations
+but unfortunately these bindings are currently
+<a href="https://github.com/calamares/calamares/tree/calamares/src/modules#c-jobmodule">undocumented</a>;
+however postmarketOS has created a mobile extension that demonstrates this
+view+job module.
+</p>
+
+<p>
+postmarketOS has also implemented the ability to load other OS' into using it's
+on <a href="https://wiki.postmarketos.org/wiki/On-device_installer">device setup process</a>
+however this process seems to add unneeded complexity when installing the target
+OS since it installs the target OS to the same disk where the installation
+medium lives.
+</p>
+
+<p>
+<img src="https://wiki.postmarketos.org/images/thumb/0/0f/Ondev-same-medium.png/300px-Ondev-same-medium.png" alt="on-device installer diagram" />
+</p>
+
 <div id="Notes-Creating a mobile-nixos Installer-Requirements for Calamares integration on Mobile NixOS"><h3 id="Requirements for Calamares integration on Mobile NixOS" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Requirements for Calamares integration on Mobile NixOS">Requirements for Calamares integration on Mobile NixOS</a></h3></div>
-<div id="Notes-Creating a mobile-nixos Installer-Calamares and postmarketOS"><h3 id="Calamares and postmarketOS" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Calamares and postmarketOS">Calamares and postmarketOS</a></h3></div>
 <div id="Notes-Creating a mobile-nixos Installer-Integration"><h3 id="Integration" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Integration">Integration</a></h3></div>
 <div id="Notes-Creating a mobile-nixos Installer-Retrospective"><h3 id="Retrospective" class="header"><a href="#Notes-Creating a mobile-nixos Installer-Retrospective">Retrospective</a></h3></div>
+
+<div id="Notes-Helpful Links"><h2 id="Helpful Links" class="header"><a href="#Notes-Helpful Links">Helpful Links</a></h2></div>
+<ul>
+<li>
+Mobile-nixos Setup
+
+<ul>
+<li>
+<a href="https://mobile.nixos.org/getting-started.html">https://mobile.nixos.org/getting-started.html</a>
+
+</ul>
+<li>
+NixOS Calamares Extension
+
+<ul>
+<li>
+<a href="https://github.com/NixOS/nixpkgs/pull/161788/files#diff-8eae4ac4558588dbcebff365560fb50aeb8bbc8a256b53373bed55cb431e47f9">https://github.com/NixOS/nixpkgs/pull/161788/files#diff-8eae4ac4558588dbcebff365560fb50aeb8bbc8a256b53373bed55cb431e47f9</a>
+
+</ul>
+<li>
+Calamares Modules Documentation
+
+<ul>
+<li>
+<a href="https://github.com/calamares/calamares/tree/calamares/src/module">https://github.com/calamares/calamares/tree/calamares/src/module</a>
+
+</ul>
+<li>
+PostmarketOS On-device installer Documentation
+
+<ul>
+<li>
+<a href="https://wiki.postmarketos.org/wiki/On-device_installer">https://wiki.postmarketos.org/wiki/On-device_installer</a>
+
+</ul>
+</ul>
 
 </body>
 </html>
