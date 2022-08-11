@@ -1,0 +1,50 @@
+=Dream2Nix Cheatsheet=
+
+==Non-top level directory `package.json`==
+
+Imagine you have a nodejs project with the following structure:
+
+{{{shell
+$ tree -L 1
+.
+├── bin -> src/bin
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── doc
+├── Dockerfile
+├── LICENSE
+├── Makefile
+├── node_modules
+├── README.md
+├── SECURITY.md
+├── settings.json.docker
+├── settings.json.template
+├── src
+├── start.bat
+├── tests -> src/tests
+└── var
+}}}
+
+but Dream2Nix is expecting a `package.json` in the top level directory,
+therefore none of the nodejs examples in the Dream2Nix repository will work. In my case
+this is a package called [[https://github.com/ether/etherpad-lite|Etherpad]] and
+the default approach renders a `flake.nix` like so:
+{{{nix
+{
+  inputs = {
+    dream2nix.url = "github:nix-community/dream2nix";
+    src.url = "github:ether/etherpad-lite";
+    src.flake = false;
+  };
+  outputs = { self, dream2nix, src }@inputs:
+    (dream2nix.lib.makeFlakeOutputs {
+      systems = [ "x86_64-linux" ];
+      config.projectRoot = ./.;
+      packageOverrides = { };
+      source = src;
+    }) // { };
+}
+}}}
+
+If you change the line `source = src;` to `source = "${src}/src";` this now points
+Dream2Nix to the `src` folder containing `package.json` and `package.lock`.

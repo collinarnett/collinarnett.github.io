@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>Dream2Nix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="Dream2Nix Cheatsheet"><h1 id="Dream2Nix Cheatsheet" class="header"><a href="#Dream2Nix Cheatsheet">Dream2Nix Cheatsheet</a></h1></div>
+
+<div id="Dream2Nix Cheatsheet-Non-top level directory `package.json`"><h2 id="Non-top level directory `package.json`" class="header"><a href="#Dream2Nix Cheatsheet-Non-top level directory `package.json`">Non-top level directory <code>package.json</code></a></h2></div>
+
+<p>
+Imagine you have a nodejs project with the following structure:
+</p>
+
+<pre shell>
+$ tree -L 1
+.
+├── bin -&gt; src/bin
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── doc
+├── Dockerfile
+├── LICENSE
+├── Makefile
+├── node_modules
+├── README.md
+├── SECURITY.md
+├── settings.json.docker
+├── settings.json.template
+├── src
+├── start.bat
+├── tests -&gt; src/tests
+└── var
+</pre>
+
+<p>
+but Dream2Nix is expecting a <code>package.json</code> in the top level directory,
+therefore none of the nodejs examples in the Dream2Nix repository will work. In my case
+this is a package called <a href="https://github.com/ether/etherpad-lite">Etherpad</a> and
+the default approach renders a <code>flake.nix</code> like so:
+</p>
+<pre nix>
+{
+  inputs = {
+    dream2nix.url = "github:nix-community/dream2nix";
+    src.url = "github:ether/etherpad-lite";
+    src.flake = false;
+  };
+  outputs = { self, dream2nix, src }@inputs:
+    (dream2nix.lib.makeFlakeOutputs {
+      systems = [ "x86_64-linux" ];
+      config.projectRoot = ./.;
+      packageOverrides = { };
+      source = src;
+    }) // { };
+}
+</pre>
+
+<p>
+If you change the line <code>source = src;</code> to <code>source = "${src}/src";</code> this now points
+Dream2Nix to the <code>src</code> folder containing <code>package.json</code> and <code>package.lock</code>.
+</p>
+
+</body>
+</html>
