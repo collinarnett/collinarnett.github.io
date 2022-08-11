@@ -12,4 +12,5 @@
 == Cheatsheets ==
 * [[Vim]]
 * [[Dream2Nix]]
+* [[Nix]]
 == Wiki ==
