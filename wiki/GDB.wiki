@@ -1,0 +1,32 @@
+= GDB Cheatsheet =
+
+== Starting ==
+
+To get started, compile with the `g` flag to get debugging information in the
+resulting binary.
+
+{{{shell
+gcc -g -o main main.c library.c header.h
+}}}
+
+Then use `gdb` to enter the interpreter.
+
+{{{shell
+gdb ./main
+}}}
+
+== TUI Mode ==
+
+Once in the GDB interpreter run the following:
+
+{{{shell
+layout src
+}}}
+
+== Common Commands ==
+
+- `run`: Runs the program in it's entirety. Also accepts arguments that would
+	normally be passed in the command line.
+- `b`: Sets a breakpoint at the given function.
+- `s`: Steps to the next line.
+- `n`: Run until the current function finishes.

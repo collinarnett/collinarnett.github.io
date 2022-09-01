@@ -13,4 +13,5 @@
 * [[Vim]]
 * [[Dream2Nix]]
 * [[Nix]]
+* [[GDB]]
 == Wiki ==

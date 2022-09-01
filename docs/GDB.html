@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="style.css">
+<title>GDB</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div id="GDB Cheatsheet"><h1 id="GDB Cheatsheet" class="header"><a href="#GDB Cheatsheet">GDB Cheatsheet</a></h1></div>
+
+<div id="GDB Cheatsheet-Starting"><h2 id="Starting" class="header"><a href="#GDB Cheatsheet-Starting">Starting</a></h2></div>
+
+<p>
+To get started, compile with the <code>g</code> flag to get debugging information in the
+resulting binary.
+</p>
+
+<pre shell>
+gcc -g -o main main.c library.c header.h
+</pre>
+
+<p>
+Then use <code>gdb</code> to enter the interpreter.
+</p>
+
+<pre shell>
+gdb ./main
+</pre>
+
+<div id="GDB Cheatsheet-TUI Mode"><h2 id="TUI Mode" class="header"><a href="#GDB Cheatsheet-TUI Mode">TUI Mode</a></h2></div>
+
+<p>
+Once in the GDB interpreter run the following:
+</p>
+
+<pre shell>
+layout src
+</pre>
+
+<div id="GDB Cheatsheet-Common Commands"><h2 id="Common Commands" class="header"><a href="#GDB Cheatsheet-Common Commands">Common Commands</a></h2></div>
+
+<ul>
+<li>
+<code>run</code>: Runs the program in it's entirety. Also accepts arguments that would
+	normally be passed in the command line.
+
+<li>
+<code>b</code>: Sets a breakpoint at the given function.
+
+<li>
+<code>s</code>: Steps to the next line.
+
+<li>
+<code>n</code>: Run until the current function finishes.
+
+</ul>
+
+</body>
+</html>
