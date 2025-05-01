@@ -1,0 +1,431 @@
+:PROPERTIES:
+:ID:       1a6abd2b-bd86-48b1-a393-ec0e9051b790
+:END:
+#+title: Singletons
+* Singletons
+#+PROPERTY: header-args :session singletons :results output :cache no
+:PROPERTIES:
+:ID:       a8ac0b81-802d-4a1c-8106-f4dd17da8960
+:END:
+** Singletons
+
+These notes follow the blog post series [[https://blog.jle.im/entry/introduction-to-singletons-1.html][Introduction to Singletons]] by
+Justin Le.
+
+*** Prerequisite: Haskell Language Extensions
+
+- ~DataKinds~: Instead of kinds being represented as ~*~ (~Type~) data
+  types can be represented as kinds. Kinds [[https://serokell.io/blog/datakinds-are-not-what-you-think][aren't real though]].
+- ~GADTs~: TODO
+- ~KindSignatures~: TODO
+- ~RankNTypes~: TODO
+
+#+begin_src haskell
+  data Container a = MkContainer
+#+end_src
+
+#+RESULTS[644e49fc5896f1815622cbf334ffed76bedab8e3]:
+
+In this case we can create a container of any type.
+
+#+begin_src haskell
+  {-# LANGUAGE TypeApplications #-}
+  :t MkContainer @Int
+#+end_src
+
+#+RESULTS[bc189f0f97541dff5a9a03232aca559d99e7eccd]:
+: MkContainer @Int :: Container Int
+
+The article takes this one step further by showing the following
+pattern. In this case ~Door~ is defined as a GADT.
+
+#+begin_src haskell
+  {-# LANGUAGE DataKinds #-}
+  :set +m
+  :{
+  data DoorState = Opened | Closed | Locked
+    deriving (Show, Eq)
+  :}
+
+  {-# LANGUAGE GADTs #-}
+  import Data.Kind (Type)
+  :{
+  data Door :: DoorState -> Type where
+    UnsafeMkDoor :: { doorMaterial :: String } -> Door s
+  :}
+#+end_src
+
+#+RESULTS[1139202119a738c42403357c2458f28ecaba267f]:
+
+Using the ~DataKinds~ extension we can see that our data type
+~DoorState~ has a corresponding kind. As expected ~DoorState~ is both
+a kind and a type. The value of ~Opened~ is also a type.
+
+#+begin_src haskell
+  :t Opened
+  :k 'Opened
+#+end_src
+
+#+RESULTS[6d5f37597e2cb59b1efdf367c0746f59ffeea796]:
+: Opened :: DoorState
+: 'Opened :: DoorState
+
+
+We can also use the unsafe constructor to make a door.
+
+#+begin_src haskell
+  :t UnsafeMkDoor @'Opened "Birch"
+#+end_src
+
+#+RESULTS[df9467e23ccb1bbcf0e1d3044c7e289d8f6cf345]:
+: UnsafeMkDoor @'Opened "Birch" :: Door Opened
+
+
+*** Phantoms in action
+
+One cool thing we can do with phantoms is create functions that allow
+us to prevent logic errors using the phantom type.
+
+We can create this function that is annotated with the correct type
+signature to only allow closing doors:
+
+#+begin_src haskell
+  :{
+  closeDoor :: Door 'Opened -> Door 'Closed
+  closeDoor (UnsafeMkDoor m) = UnsafeMkDoor m
+  :}
+#+end_src
+
+#+RESULTS[dd87a9ef082607fbc7e8cd2afb93a786a7907c46]:
+
+#+begin_src haskell
+  myDoor = UnsafeMkDoor @'Opened "Spruce"
+  :t myDoor
+  :t closeDoor myDoor
+  yourDoor = UnsafeMkDoor @'Closed "Acacia"
+  closeDoor yourDoor
+#+end_src
+
+#+RESULTS[081bc3949e806c75f4fbfc3fdc59502ba101468d]:
+: myDoor :: Door Opened
+: closeDoor myDoor :: Door Closed
+: <interactive>:42:11-18: error: [GHC-83865]
+:     • Couldn't match type ‘Closed’ with ‘Opened’
+:       Expected: Door Opened
+:         Actual: Door Closed
+:     • In the first argument of ‘closeDoor’, namely ‘yourDoor’
+:       In the expression: closeDoor yourDoor
+:       In an equation for ‘it’: it = closeDoor yourDoor
+
+from here it's trivial to write the other functions for locking and
+opening a door
+
+#+begin_src haskell
+  :{
+  lockDoor :: Door 'Closed -> Door 'Locked
+  lockDoor (UnsafeMkDoor m) = UnsafeMkDoor m
+  :}
+  :{
+  openDoor :: Door 'Closed -> Door 'Opened
+  openDoor (UnsafeMkDoor m) = UnsafeMkDoor m
+  :}
+#+end_src
+
+#+RESULTS[5789808c6d6bd5b9e2936c09177e6db8a187bc7e]:
+
+Some example composed functions. Here we can see that locking an open
+door is impossible.
+
+#+begin_src haskell
+  :t lockDoor . closeDoor
+  :t closeDoor . openDoor
+  :t lockDoor . openDoor
+#+end_src
+
+#+RESULTS[e799eb861956d1a298cbcc47972fdadb5df0d603]:
+: lockDoor . closeDoor :: Door Opened -> Door Locked
+: closeDoor . openDoor :: Door Closed -> Door Closed
+: <interactive>:1:12-19: error: [GHC-83865]
+:     • Couldn't match type ‘Opened’ with ‘Closed’
+:       Expected: Door Closed -> Door Closed
+:         Actual: Door Closed -> Door Opened
+:     • In the second argument of ‘(.)’, namely ‘openDoor’
+:       In the expression: lockDoor . openDoor
+
+*** The Phantom Menace
+
+The article then goes on to ask the question of whether or not it's
+possible to implement the following function:
+
+#+begin_src haskell :eval no
+  doorStatus :: Door s -> DoorState
+  doorStatus _ = -- ?
+#+end_src
+
+The article assumes that it's easy to decipher why this doesn't
+work but I wanted to go more in depth for why it doesn't work. Lets
+start with ~Door~. What is exactly is ~Door~? Lets reminder ourselves
+of the definition.
+
+#+begin_src haskell :eval no
+  data Door :: DoorState -> Type where
+    UnsafeMkDoor :: { doorMaterial :: String } -> Door s
+#+end_src
+
+#+RESULTS[eab847c2692adaf3c347ac32d9e7f3e6e62a2d7c]:
+
+Door is a GADT with kind ~DoorState -> Type~ and a constructor of
+~UnsafeMkDoor~
+
+Because ~s~ is a type variable (and not a constructor since it is a
+phantom type) we can't populate it at runtime.
+
+
+*** The Singleton Pattern
+Here is an example of a singleton using our door. Notice that every
+instance of what would be ~s~ earlier is filled? ~SDoorState~
+can |only| be ~SOpened~ ~SClosed~ or ~SLocked~.
+
+This enables us to write the following function:
+
+#+begin_src haskell
+  data SDoorState :: DoorState -> Type where
+    SOpened :: SDoorState 'Opened
+    SClosed :: SDoorState 'Closed
+    SLocked :: SDoorState 'Locked
+
+
+  -- going even further with brevity using point-free style...
+  :{
+  lockAnyDoor :: SDoorState s -> Door s -> Door 'Locked
+  lockAnyDoor SOpened = lockDoor . closeDoor
+  lockAnyDoor SClosed = lockDoor
+  lockAnyDoor SLocked = id
+  :}
+#+end_src
+
+#+RESULTS[2ea543041f6a69ab5d5ed2f2f282dfed4713c994]:
+
+We could also write ~lockAnyDoor~ in the following ways
+
+#+begin_src haskell :eval no
+   :{
+   lockAnyDoor :: SDoorState s -> Door s -> Door 'Locked
+   lockAnyDoor sng door = case sng of
+     SOpened -> lockDoor (closeDoor door) -- in this branch, s is 'Opened
+     SClosed -> lockDoor door             -- in this branch, s is 'Closed
+     SLocked -> door
+   :}
+
+   or as I prefer...
+   :{
+   lockAnyDoor :: SDoorState s -> Door s -> Door 'Locked
+   lockAnyDoor SOpened door = lockDoor (closeDoor door)
+   lockAnyDoor SClosed door = lockDoor door
+   lockAnyDoor SLocked door = door
+   :}
+#+end_src
+
+
+~SDoorState~ is referred to as a |witness| to ~s~. It can capture the
+value of ~s~ for use during runtime.
+
+We can now write another function that easily lets us get the status
+of a door.
+
+#+begin_src haskell
+  :{
+  doorStatus :: SDoorState s -> Door s -> DoorState
+  doorStatus SOpened _ = Opened
+  doorStatus SClosed _ = Closed
+  doorStatus SLocked _ = Locked
+  :}
+#+end_src
+
+#+RESULTS[9006e239b41aaf5383a5d31a506b3f5922d5b212]:
+
+
+Until now we've been explicitly passing around ~SDoorState~. In order
+to make passing around ~SDoorState~ implicit we can create the
+following typeclass.
+
+#+begin_src haskell
+  :{
+  class SingDSI s where
+      singDS :: SDoorState s
+
+  instance SingDSI 'Opened where
+      singDS = SOpened
+  instance SingDSI 'Closed where
+      singDS = SClosed
+  instance SingDSI 'Locked where
+      singDS = SLocked
+  :}
+#+end_src
+
+#+RESULTS:
+
+How does this work? Lets see an example with ~SingDSI~ and then we'll
+rehash how a typeclass works in Haskell.
+
+#+begin_src haskell
+  :{
+  doorStatus_ :: SingDSI s => Door s -> DoorState
+  doorStatus_ = doorStatus singDS
+  :}
+#+end_src
+
+#+RESULTS:
+
+Seems nice right? We don't have pass ~SDoorState~ anymore. The ~s~ in SingDSI can only
+correspond to ~'Opened~, ~'Closed~ and ~'Locked~ thus fulfilling the
+conditions to be a singleton and matching all of the cases for ~s~ in
+~SDoorState~.
+
+
+Another function we can create this way is ~lockAnyDoor~
+
+#+begin_src haskell
+  :{
+  lockAnyDoor_ :: SingDSI s => Door s -> Door 'Locked
+  lockAnyDoor_ = lockAnyDoor singDS
+  :}
+#+end_src
+
+#+RESULTS:
+
+Lets try these out. First let's create a door.
+
+#+begin_src haskell
+  myDoor = UnsafeMkDoor @'Opened "Birch"
+  :t lockAnyDoor_ myDoor
+#+end_src
+
+#+RESULTS:
+: lockAnyDoor_ myDoor :: Door Locked
+
+
+The article then goes on to explain that we can now rewrite ~makeDoor~
+using our new witness.
+
+#+begin_src haskell
+  :{
+  mkDoor :: SDoorState s -> String -> Door s
+  mkDoor _ = UnsafeMkDoor
+  :}
+#+end_src
+
+#+RESULTS:
+
+This works because ~s~ can only be one of our three kinds.
+
+#+begin_src haskell
+  :t mkDoor SOpened "Oak"
+#+end_src
+
+#+RESULTS:
+: mkDoor SOpened "Oak" :: Door Opened
+
+
+*** The Singletons Library
+#+PROPERTY: header-args :session singletons-library :results output :cache no
+
+#+begin_src haskell
+  {-# LANGUAGE DataKinds            #-}
+  {-# LANGUAGE EmptyCase            #-}
+  {-# LANGUAGE GADTs                #-}
+  {-# LANGUAGE InstanceSigs         #-}
+  {-# LANGUAGE KindSignatures       #-}
+  {-# LANGUAGE LambdaCase           #-}
+  {-# LANGUAGE RankNTypes           #-}
+  {-# LANGUAGE ScopedTypeVariables  #-}
+  {-# LANGUAGE StandaloneDeriving   #-}
+  {-# LANGUAGE TemplateHaskell      #-}
+  {-# LANGUAGE TypeApplications     #-}
+  {-# LANGUAGE TypeFamilies         #-}
+  {-# LANGUAGE UndecidableInstances #-}
+  import Data.Kind
+  import Data.Singletons
+  import Data.Singletons.TH
+  :{
+  data DoorState = Opened | Closed | Locked
+    deriving (Show, Eq)
+  genSingletons [''DoorState]
+  data Door :: DoorState -> Type where
+      UnsafeMkDoor :: { doorMaterial :: String } -> Door s
+
+  closeDoor :: Door 'Opened -> Door 'Closed
+  closeDoor (UnsafeMkDoor m) = UnsafeMkDoor m
+
+  lockDoor :: Door 'Closed -> Door 'Locked
+  lockDoor (UnsafeMkDoor m) = UnsafeMkDoor m
+
+  openDoor :: Door 'Closed -> Door 'Opened
+  openDoor (UnsafeMkDoor m) = UnsafeMkDoor m
+
+  doorStatus :: Sing s -> Door s -> DoorState
+  doorStatus SOpened _ = Opened
+  doorStatus SClosed _ = Closed
+  doorStatus SLocked _ = Locked
+
+  lockAnyDoor :: Sing s -> (Door s -> Door 'Locked)
+  lockAnyDoor = \case
+      SOpened -> lockDoor . closeDoor
+      SClosed -> lockDoor
+      SLocked -> id
+
+  doorStatus_ :: SingI s => Door s -> DoorState
+  doorStatus_ = doorStatus sing
+
+  lockAnyDoor_ :: SingI s => Door s -> Door 'Locked
+  lockAnyDoor_ = lockAnyDoor sing
+
+  mkDoor :: Sing s -> String -> Door s
+  mkDoor _ = UnsafeMkDoor
+  :}
+#+end_src
+
+#+RESULTS:
+
+**** Exercises
+
+Implement the following signature:
+
+#+begin_src haskell :eval no
+  unlockDoor :: Int -> Door 'Locked -> Maybe (Door 'Closed)
+#+end_src
+
+
+#+begin_src haskell
+  :{
+  unlockDoor :: Int -> Door 'Locked -> Maybe (Door 'Closed)
+  unlockDoor password (UnsafeMkDoor m) = if (odd password) then Just (UnsafeMkDoor m) else Nothing
+  :}
+#+end_src
+
+#+RESULTS:
+
+Implement the following signature:
+
+#+begin_src haskell :eval no
+  openAnyDoor :: SingI s => Int -> Door s -> Maybe (Door 'Opened)
+#+end_src
+
+
+#+begin_src haskell
+  :{
+  openAnyDoor :: SingI s => Int -> Door s -> Maybe (Door 'Opened)
+  openAnyDoor n = openAnyDoor_ sing
+    where
+      openAnyDoor_ :: Sing s -> Door s -> Maybe (Door 'Opened)
+      openAnyDoor_ SOpened = Just . id
+      openAnyDoor_ SClosed = Just . openDoor
+      openAnyDoor_ SLocked = (\(d :: Door 'Locked) -> do
+        door <-  unlockDoor n d
+        return $ openDoor door)
+  :}
+
+#+end_src
+
+#+RESULTS:
+

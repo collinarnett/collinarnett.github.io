@@ -1,0 +1,9 @@
+:PROPERTIES:
+:ID:       fbf1a4ba-6011-4c86-86f0-a729e3ae64e3
+:END:
+#+title: Haskell
+
+* Topics
+
+-[[id:1a6abd2b-bd86-48b1-a393-ec0e9051b790][ Singletons]]
+

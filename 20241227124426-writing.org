@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       441d0d19-648b-4b2f-8dfc-ae9a5fed76e7
+:END:
+#+title: Writing
+

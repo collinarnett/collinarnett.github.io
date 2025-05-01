@@ -1,0 +1,144 @@
+:PROPERTIES:
+:ID:       2eb52ad0-d66f-474f-b5a5-71c6105b35a1
+:END:
+#+title: Purely Functional Data Structures
+
+* 1. Introduction
+** Purpose
+
+The purpose of /[[id:2eb52ad0-d66f-474f-b5a5-71c6105b35a1][Purely Functional Data Structures]]/ is to provide
+functional programmers with data structures that adhere to functional
+programming rules while still being space and time efficient.
+
+** 1.1 Functional vs Imperative Data Structures
+
+Imperative data structures are different from functional data
+structures because they are permitted to perform reassignment on
+variables and to update variables in place. These operations are
+called /destructive updates/.
+
+Functional data structures are also expected to keep previous
+instances of themselves around for further processing, since
+functional data structures are not modified in-place when they are
+updated.
+
+All functional data structures are Persistent Data Structures
+while imperative data structures can be either persistent or
+(typically) Ephemeral Data Structures.
+
+Even though functional programming languages are cannot be as
+efficient as their imperative counterparts, they can be asymptotically
+efficient in practice.
+
+** 1.2 Strict vs. Lazy Evaluation
+
+Lazy evaluation means that variables are only computed when they are
+referenced.
+
+Strict evaluation means that the value of variables are computed
+immediately.
+
+Since strict languages' values are computed immediately they are easy
+to reason about when compared to lazy languages where a programmer
+must ascertain whether or not a value has been computed yet. This
+process makes it difficult to figure out the time and space complexity
+of programs.
+
+# Only include information in notes that you would find helpful when
+# reading back.
+
+** 1.3 Terminology
+
+- **Abstract data type**: a type and a collection of functions on that
+  type. AKA an /abstraction/.
+
+- **Concrete realization of an abstract data type**: /implementation/.
+
+- **Instance of a data type**: e.g., a particular list or tree. AKA an
+  /object/ or /version/.
+
+- **Persistent identity**: A unique identity that is invariant under
+  updates. If you make a change to a persistent data structure, a new
+  copy of that data structure will be made, but we're still referring
+  to the same data structure.
+
+** 1.4 Approach
+
+Section 1.4 explains that the book will not cover every data structure
+but will focus on common patterns used to write functional data
+structures.
+
+** 1.5 Overview
+
+Section 1.5 explains how the book is structured.
+
+* 2. Persistence
+
+** 2.1 Lists
+
+# TODO Explain the difference between persistent lists and ephemeral
+# lists
+
+*** Chapter Code
+#+begin_src haskell
+  import Prelude hiding (cons,head,tail)
+
+  data List a = Nil | Cons a (List a)
+
+  head :: List a -> a
+  head Nil = error "empty list"
+  head (Cons x _) = x
+
+  tail :: List a -> List a
+  tail Nil = error "empty list"
+  tail (Cons _ xs) = xs
+
+  snoc :: List a -> a
+  snoc Nil = error "empty list"
+  snoc (Cons x Nil) = x
+  snoc (Cons _ xs) = tail xs
+
+  (+++) :: List a -> List a -> List a
+  Nil +++ Nil = Nil
+  Nil +++ ys = ys
+  xs +++ Nil = xs
+  (Cons x xs) +++ ys = (Cons x (xs +++ ys))
+
+  update :: List a -> Int -> a -> List a
+  update Nil _ _ = error "list is 'Nil'. Cannot modify"
+  update (Conx x xs) 0 y = Cons y xs
+  update (Cons x xs) i y = Cons (x (update xs (i-1) y))
+
+  -- Bonus
+  instance (Show a) => Show (List a) where
+  show Nil = "Nil"
+  show (Cons a Nil) = show a ++ " " ++ "Nil"
+  show (Cons a b) = show a ++ " " ++ show b
+#+end_src
+
+*** Exercise 2.1
+
+#+begin_src haskell
+  -- Using haskell lists for brevity
+  suffixes :: [a] -> [[a]]
+  suffixes [] = [[]]
+  suffixes xs = xs : suffixes (tail xs)
+#+end_src
+
+**** O(n) Space & Time Explanation
+
+For time complexity, there are only ever "n" calls since ~tail~ is
+called for each time there is at least 1 element. Best case scenario
+there are no items in the initial list in which case there is only one
+call. Any more and the recursive case is hit and subsequently the base
+case.
+
+Since no new elements are added except for the wrapping list and the
+empty list, the original nodes are shared with the new result.
+
+** 2.2 Binary Search Trees
+
+#+begin_src haskell
+  data Tree a = Leaf a | Branch (Tree a) (Tree a)
+  instance Ord Tree where
+#+end_src
