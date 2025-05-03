@@ -25,5 +25,17 @@ stdenv.mkDerivation {
 
   installPhase = ''
     cp -r site/ $out
+    cat > $out/index.html << EOF
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta http-equiv="refresh" content="0; url=sitemap.html">
+    <title>Redirecting...</title>
+    </head>
+    <body>
+    <p>If you are not redirected automatically, follow this <a href="path/to/your/file.html">link</a>.</p>
+    </body>
+    </html>
+    EOF
   '';
 }
