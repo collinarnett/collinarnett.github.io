@@ -1,7 +1,7 @@
 # Org-Roam Notes Website
 [![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fcollinarnett%2Fcollinarnett.github.io%3Fbranch%3Dmain)](https://garnix.io/repo/collinarnett/collinarnett.github.io)
 
-My website that converts my Org-Roam notes into a static website.
+My website built from my org-roam notes.
 
 ## Project Overview
 
