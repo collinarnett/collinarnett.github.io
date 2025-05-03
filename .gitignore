@@ -1,1 +1,18 @@
-.swp
+# Nix
+.direnv/
+result
+
+# Daily
+[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].org
+
+# Work
+*-work.org
+*-p1.org
+
+# Leetcode
+*-leetcode.org
+problem*.org
+
+# Misc
+site/
+sitemap.org

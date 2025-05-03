@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       d36f9367-25de-4ed7-8c45-b60f2d87a6f5
+:END:
+#+title: Programming
+
+* Languages
+[[id:fbf1a4ba-6011-4c86-86f0-a729e3ae64e3][Haskell]]
+

@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       d64c3828-5cf9-4f0b-bf96-cee40b8c2c40
+:END:
+#+title: Books
+
+[[id:2eb52ad0-d66f-474f-b5a5-71c6105b35a1][Purely Functional Data Structures]]
